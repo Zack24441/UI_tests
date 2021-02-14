@@ -3,6 +3,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -37,8 +38,15 @@ public class BasicTest {
             e.printStackTrace();
         }
         switch (properties.getProperty("browser")) {
-            case "firefox" : WebDriverManager.firefoxdriver().setup(); return new FirefoxDriver();
-            default: WebDriverManager.chromedriver().setup(); return new ChromeDriver();
+            case "firefox" : WebDriverManager.firefoxdriver().setup();
+                return new FirefoxDriver();
+            default: WebDriverManager.chromedriver().setup();
+                ChromeOptions options = new ChromeOptions();
+                options.setHeadless(true);
+                options.addArguments("--disable-gpu")
+                        .addArguments("--no-sandbox")
+                        .addArguments("--disable-setuid-sandbox");
+                return new ChromeDriver(options);
         }
     }
 }
